@@ -12,12 +12,14 @@ import {
 import SignUp from "./components/sign-up/SignUp";
 import Login from "./components/login/Login";
 import { Provider } from "react-redux";
-import store from "./store";
+import { store, persistor } from "./store";
 import UserDashboard from "./components/user/UserDashboard";
 import UserHistory from "./components/user/UserHistory";
 import UserOrders from "./components/user/UserOrders";
 import UserProfile from "./components/user/UserProfile";
 import { ToastContainer } from "react-toastify";
+import { PersistGate } from "redux-persist/integration/react";
+import WaterSourceDashboard from "./components/water-source/WaterSourceDashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +33,9 @@ const router = createBrowserRouter(
         <Route path="orders" element={<UserOrders />} />
         <Route path="profile" element={<UserProfile />} />
       </Route>
+      <Route path="/water-source">
+        <Route path="dashboard" element={<WaterSourceDashboard />} />
+      </Route>
     </Route>
   )
 );
@@ -40,7 +45,9 @@ root.render(
   <React.StrictMode>
     <ToastContainer />
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

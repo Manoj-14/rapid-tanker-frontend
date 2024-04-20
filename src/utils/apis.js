@@ -31,7 +31,7 @@ export const authUser = async (email, password) => {
     });
   return response;
 };
-export const setUserData = async (email, token) => {
+export const getUserData = async (email, token) => {
   const response = await axios
     .get(`${BASE_URL}/user/get/${email}?type=user`, {
       headers: {
@@ -56,7 +56,8 @@ export const getLocation = async (longitude, latitude) => {
   return response;
 };
 
-export const setLocation = async (longitude, latitude, userId) => {
+export const setUserLocation = async (longitude, latitude, userId) => {
+  console.log(userId);
   const token = localStorage.getItem("token");
   const response = await axios.post(
     `${BASE_URL}/user/location/${userId}`,

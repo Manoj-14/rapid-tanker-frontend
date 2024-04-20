@@ -2,8 +2,8 @@ import { Button, Form, Input, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../../slices/userSlice";
-import { setUserData } from "../../utils/apis";
+import { setuser } from "../../slices/userSlice";
+import { getUserData } from "../../utils/apis";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 const UserProfile = () => {
@@ -14,17 +14,9 @@ const UserProfile = () => {
   console.log(user);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      const email = localStorage.getItem("email");
-      if (!token || !email) {
-        navigate("/login");
-      } else {
-        let userResp = await setUserData(email, token);
-        await dispatch(getUser(userResp.data.user));
-      }
-    };
-    fetchUser();
+    if (!user) {
+      navigate("/login");
+    }
   }, []);
 
   const showModal = () => {
@@ -37,69 +29,71 @@ const UserProfile = () => {
 
   return (
     <>
-      <div class="container py-5">
+      <div className="container py-5">
         {user && (
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card mb-4">
-                <div class="card-body text-center">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="card mb-4">
+                <div className="card-body text-center">
                   <img
                     draggable="false"
                     src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                     alt="avatar"
-                    class="rounded-circle img-fluid"
+                    className="rounded-circle img-fluid"
                   />
-                  <h5 class="my-3">Manoj</h5>
-                  <p class="text-muted mb-1">{user.email}</p>
+                  <h5 className="my-3">Manoj</h5>
+                  <p className="text-muted mb-1">{user.email}</p>
                   <Button onClick={showModal}>Update Password</Button>
                 </div>
               </div>
             </div>
-            <div class="col-lg-8">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Full Name:</p>
+            <div className="col-lg-8">
+              <div className="card mb-4">
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-3">
+                      <p className="mb-0">Full Name:</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">Manoj M</p>
-                    </div>
-                  </div>
-                  <hr />
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Email:</p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">{user.email}</p>
+                    <div className="col-sm-9">
+                      <p className="text-muted mb-0">Manoj M</p>
                     </div>
                   </div>
                   <hr />
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Phone:</p>
+                  <div className="row">
+                    <div className="col-sm-3">
+                      <p className="mb-0">Email:</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">
-                        <a class="text-primary text-sm mb-0">Add phone</a>
+                    <div className="col-sm-9">
+                      <p className="text-muted mb-0">{user.email}</p>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="row">
+                    <div className="col-sm-3">
+                      <p className="mb-0">Phone:</p>
+                    </div>
+                    <div className="col-sm-9">
+                      <p className="text-muted mb-0">
+                        <a className="text-primary text-sm mb-0">Add phone</a>
                       </p>
-                      <p class="text-muted mb-0">9741626527</p>
+                      <p className="text-muted mb-0">9741626527</p>
                     </div>
                   </div>
                   <hr />
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <p class="mb-0">Address:</p>
+                  <div className="row">
+                    <div className="col-sm-3">
+                      <p className="mb-0">Address:</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">
+                    <div className="col-sm-9">
+                      <p className="text-muted mb-0">
                         Bengaluru{" "}
-                        <a class="text-primary text-sm mb-0">Update address</a>
+                        <a className="text-primary text-sm mb-0">
+                          Update address
+                        </a>
                       </p>
                     </div>
-                    <div class="col-sm-9">
-                      <a class="text-primary mb-0">Update address</a>
+                    <div className="col-sm-9">
+                      <a className="text-primary mb-0">Update address</a>
                     </div>
                   </div>
                 </div>
@@ -109,10 +103,10 @@ const UserProfile = () => {
         )}
       </div>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
-        <h4 className="text-center">Change Password</h4>
+        <h4 classNameName="text-center">Change Password</h4>
         <Form
           name="change-password-form"
-          className="p-3"
+          classNameName="p-3"
           initialValues={{ remember: true }}
         >
           <Form.Item
@@ -139,7 +133,7 @@ const UserProfile = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="change-password-form"
+              classNameName="change-password-form"
             >
               CHANGE PASSWORD
             </Button>
