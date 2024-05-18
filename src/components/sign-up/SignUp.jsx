@@ -51,7 +51,10 @@ const SignUp = () => {
           >
             <Input placeholder="Username" />
           </Form.Item>
-          <Form.Item name="accountType">
+          <Form.Item
+            name="accountType"
+            rules={[{ required: true, message: "Please select role" }]}
+          >
             <Radio.Group>
               <Radio.Button className="radio-button" value="USER">
                 USER

@@ -29,8 +29,8 @@ const SelectAccountTypeModal = ({ accountType, handleRedirection }) => {
   }
   return (
     <Card
-      style={{ width: 300 }}
-      className="b-2"
+      style={{ width: 300, cursor: "pointer" }}
+      className="d-inline-block border-2 border-primary m-2"
       onClick={() => handleRedirection(accountType)}
     >
       <p>{accountTypeText}</p>
@@ -59,7 +59,7 @@ const Login = () => {
         navigate("/user/dashboard");
         break;
       case "WATER_SUPPLIER":
-        navigate("/water-supplier/dashboard");
+        navigate("/water-source/dashboard");
         break;
       case "TANKER_SUPPLIER":
         console.log("tanker supplier dashboard");
@@ -76,7 +76,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     let response = await authUser(values.username, values.password);
-    if (response) {
+    if (response && response.data) {
       console.log(response);
       const token = response.data.token;
       localStorage.setItem("token", token);
@@ -149,16 +149,18 @@ const Login = () => {
         footer={null}
         onCancel={closeAccountTypeModel}
       >
-        {accountTypes.map((type) => {
-          console.log(type);
-          return (
-            <SelectAccountTypeModal
-              key={`${type}-1`}
-              accountType={type}
-              handleRedirection={handleAccountTypeRedirection}
-            />
-          );
-        })}
+        <div className="d-flex ">
+          {accountTypes.map((type) => {
+            console.log(type);
+            return (
+              <SelectAccountTypeModal
+                key={`${type}-1`}
+                accountType={type}
+                handleRedirection={handleAccountTypeRedirection}
+              />
+            );
+          })}
+        </div>
       </Modal>
     </div>
   );

@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { toast } from "react-toastify";
 import store from "../store";
+import { AccountSetupException } from "../exceptions/AccountSetupException";
 
 export const registerUser = async (email, password, accountType) => {
   console.log(email, password, accountType);
@@ -72,5 +73,40 @@ export const setUserLocation = async (longitude, latitude, userId) => {
       },
     }
   );
+  return response;
+};
+
+// TODO : USE THIS AFTER SETTING UP FROM BANCKEND (ERROR IS NOT FORWARDING TO USER SERVICE)
+export const getWaterSupplier = async (email) => {
+  const token = localStorage.getItem("token");
+  const response = await axios
+    .get(`${BASE_URL}/supplier/get/${email}?type=water-supplier`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((err) => {
+      console.log(err.response.status);
+      if (err.response.status === 406) {
+        throw new AccountSetupException("Need to update account");
+      }
+    });
+  return response;
+};
+
+export const getWaterSupplierDummy = async (userId) => {
+  const token = localStorage.getItem("token");
+  const response = await axios
+    .get(`${BASE_URL}/supplier/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((err) => {
+      console.log(err.response.status);
+      if (err.response.status === 406) {
+        throw new AccountSetupException("Need to update account");
+      }
+    });
   return response;
 };

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import WaterSupplierCard from "../cards/WaterSupplierCard";
-import { Card, Layout, Modal } from "antd";
+import { Button, Card, Layout, message, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { getLocation, setUserLocation, getUserData } from "../../utils/apis";
 import { useDispatch, useSelector } from "react-redux";
 import { setuser } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import { setLocation } from "../../slices/locationSlice";
+import Search from "antd/es/input/Search";
+import { AimOutlined } from "@ant-design/icons";
 
 const Address = ({ displayAddress, handleSetLocation }) => {
   return (
@@ -20,6 +22,7 @@ const UserDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLocationModal, setIsLocationModal] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [locationSearchOpen, setLocationSearchOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const { location } = useSelector((state) => state.location);
 
@@ -77,6 +80,16 @@ const UserDashboard = () => {
     }
   }, [location]);
 
+  const handleLocationSearchModal = () => {
+    setIsLocationModal(false);
+    setLocationSearchOpen(true);
+  };
+  const handleLocationSearchModalClose = () => {
+    setLocationSearchOpen(false);
+    setIsLocationModal(true);
+    message.error("please set your location");
+  };
+
   const getUserLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -114,9 +127,9 @@ const UserDashboard = () => {
   };
 
   return (
-    <>
+    <div style={{ paddingTop: "3rem" }}>
       <Layout>
-        <h1>User Dashboard</h1>
+        <h3>Select the water suppliers </h3>
         <Layout>
           <WaterSupplierCard />
         </Layout>
@@ -132,19 +145,36 @@ const UserDashboard = () => {
       <Modal
         title="Select Your Location"
         open={isLocationModal}
-        footer={null}
+        footer={[
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleLocationSearchModal}
+          >
+            <AimOutlined /> Search Your location
+          </Button>,
+        ]}
         onCancel={handleSetLocationModalClose}
       >
         {currentLocation && (
-          <Address
-            displayAddress={currentLocation.formatted}
-            handleSetLocation={() =>
-              handleSetlocation(currentLocation.lon, currentLocation.lat)
-            }
-          />
+          <>
+            <Address
+              displayAddress={currentLocation.formatted}
+              handleSetLocation={() =>
+                handleSetlocation(currentLocation.lon, currentLocation.lat)
+              }
+            />
+          </>
         )}
       </Modal>
-    </>
+      <Modal
+        title="Search your location"
+        open={locationSearchOpen}
+        onCancel={handleLocationSearchModalClose}
+      >
+        <Search></Search>
+      </Modal>
+    </div>
   );
 };
 
